@@ -4,13 +4,13 @@ import * as os from 'os';
 
 /**
  * Manages vibe coding sessions.
- * Creates session directories and files at ~/.vibe-coding/sessions/
+ * Creates session directories and files at ~/.just-vibe-coding/sessions/
  */
 export class SessionManager {
   private readonly baseDir: string;
 
   constructor() {
-    this.baseDir = path.join(os.homedir(), '.vibe-coding', 'sessions');
+    this.baseDir = path.join(os.homedir(), '.just-vibe-coding', 'sessions');
   }
 
   /**
@@ -38,7 +38,7 @@ export class SessionManager {
    * Checks if a workspace path is a vibe coding session.
    */
   isVibeSession(workspacePath: string): boolean {
-    return workspacePath.includes('.vibe-coding') && workspacePath.includes('sessions');
+    return workspacePath.includes('.just-vibe-coding') && workspacePath.includes('sessions');
   }
 
   /**

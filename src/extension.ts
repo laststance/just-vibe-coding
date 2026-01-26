@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // Register the start command
   const startCommand = vscode.commands.registerCommand(
-    'vibe-coding.start',
+    'just-vibe-coding.start',
     () => startSession(sessionManager)
   );
   context.subscriptions.push(startCommand);

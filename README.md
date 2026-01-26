@@ -1,13 +1,13 @@
-# Vibe Coding ✨
+# Just Vibe Coding ✨
 
 > A place to write code without purpose. Just vibe and code.
 
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/laststance.vibe-coding?style=flat-square&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=laststance.vibe-coding)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/laststance.just-vibe-coding?style=flat-square&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=laststance.just-vibe-coding)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
-## What is Vibe Coding?
+## What is Just Vibe Coding?
 
-**Vibe Coding** is a VS Code extension that provides a friction-free space for writing code — no project context, no goals, no pressure.
+**Just Vibe Coding** is a VS Code extension that provides a friction-free space for writing code — no project context, no goals, no pressure.
 
 - 🧠 Start coding before you think
 - 🫧 Failure, destruction, and incompleteness are allowed
@@ -15,8 +15,8 @@
 
 ## Features
 
-- **One Command**: `Vibe Coding: Start` — that's all you need
-- **Isolated Environment**: Each session lives in `~/.vibe-coding/sessions/`
+- **One Command**: `Just Vibe Coding: Start` — that's all you need
+- **Isolated Environment**: Each session lives in `~/.just-vibe-coding/sessions/`
 - **Instant Execution**: Save to run, see output immediately
 - **Zero Config**: No settings, no choices, no setup
 
@@ -28,14 +28,14 @@
 ## Usage
 
 1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-2. Type `Vibe Coding: Start`
+2. Type `Just Vibe Coding: Start`
 3. A new window opens with `vibe.ts`
 4. Write code, save (`Cmd+S`), see output
 5. That's it. Just vibe.
 
 ## What This Extension Does NOT Do
 
-By design, **Vibe Coding** does NOT provide:
+By design, **Just Vibe Coding** does NOT provide:
 
 - ❌ Project management
 - ❌ Framework selection
@@ -50,7 +50,7 @@ These features would break the vibe.
 
 > Code is like talking. But we've made it feel like public speaking.
 
-Vibe Coding is for:
+Just Vibe Coding is for:
 - Warming up before work
 - When your mind is cluttered
 - When you have no ideas but want to move your hands

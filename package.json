@@ -1,6 +1,6 @@
 {
-  "name": "vibe-coding",
-  "displayName": "Vibe Coding",
+  "name": "just-vibe-coding",
+  "displayName": "Just Vibe Coding",
   "description": "A place to write code without purpose. Just vibe and code.",
   "version": "0.1.0",
   "publisher": "laststance",
@@ -17,12 +17,12 @@
   "pricing": "Free",
   "repository": {
     "type": "git",
-    "url": "https://github.com/laststance/vibe-coding"
+    "url": "https://github.com/laststance/just-vibe-coding"
   },
   "bugs": {
-    "url": "https://github.com/laststance/vibe-coding/issues"
+    "url": "https://github.com/laststance/just-vibe-coding/issues"
   },
-  "homepage": "https://github.com/laststance/vibe-coding#readme",
+  "homepage": "https://github.com/laststance/just-vibe-coding#readme",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -42,8 +42,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "vibe-coding.start",
-        "title": "Vibe Coding: Start"
+        "command": "just-vibe-coding.start",
+        "title": "Just Vibe Coding: Start"
       }
     ]
   },

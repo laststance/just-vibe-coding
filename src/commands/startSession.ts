@@ -18,6 +18,6 @@ export async function startSession(sessionManager: SessionManager): Promise<void
   } catch (error) {
     // Silent fail - no notifications per PRD philosophy
     // Errors only logged to console for debugging
-    console.error('[vibe-coding]', error);
+    console.error('[just-vibe-coding]', error);
   }
 }
