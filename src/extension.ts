@@ -54,7 +54,7 @@ async function setupVibeSession(
     { dispose: () => statusBar?.dispose() }
   );
 
-  // Find vibe file (vibe.ts or vibe.js)
+  // Find vibe file (vibe.js or vibe.ts)
   const vibeFile = await findVibeFile(workspacePath);
   if (!vibeFile) return;
 
@@ -78,19 +78,19 @@ async function setupVibeSession(
 }
 
 /**
- * Finds the vibe file in the workspace (vibe.ts or vibe.js).
+ * Finds the vibe file in the workspace (vibe.js or vibe.ts).
  */
 async function findVibeFile(workspacePath: string): Promise<string | undefined> {
-  const tsFile = path.join(workspacePath, 'vibe.ts');
   const jsFile = path.join(workspacePath, 'vibe.js');
+  const tsFile = path.join(workspacePath, 'vibe.ts');
 
   try {
-    await vscode.workspace.fs.stat(vscode.Uri.file(tsFile));
-    return tsFile;
+    await vscode.workspace.fs.stat(vscode.Uri.file(jsFile));
+    return jsFile;
   } catch {
     try {
-      await vscode.workspace.fs.stat(vscode.Uri.file(jsFile));
-      return jsFile;
+      await vscode.workspace.fs.stat(vscode.Uri.file(tsFile));
+      return tsFile;
     } catch {
       return undefined;
     }

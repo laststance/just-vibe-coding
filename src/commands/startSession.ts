@@ -7,7 +7,7 @@ import { SessionManager } from '../services/sessionManager';
  */
 export async function startSession(sessionManager: SessionManager): Promise<void> {
   try {
-    // Create session directory and vibe.ts file
+    // Create session directory and vibe.js file
     const sessionPath = await sessionManager.createSession();
 
     // Open in a new VS Code window

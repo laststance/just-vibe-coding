@@ -20,13 +20,13 @@ export class SessionManager {
   async createSession(): Promise<string> {
     const timestamp = this.getTimestamp();
     const sessionDir = path.join(this.baseDir, timestamp);
-    const filePath = path.join(sessionDir, 'vibe.ts');
+    const filePath = path.join(sessionDir, 'vibe.js');
 
     // Create session directory
     const dirUri = vscode.Uri.file(sessionDir);
     await vscode.workspace.fs.createDirectory(dirUri);
 
-    // Create vibe.ts with initial content
+    // Create vibe.js with initial content
     const fileUri = vscode.Uri.file(filePath);
     const content = Buffer.from('console.log("vibe coding")\n', 'utf8');
     await vscode.workspace.fs.writeFile(fileUri, content);

@@ -29,7 +29,7 @@
 
 1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
 2. Type `Just Vibe Coding: Start`
-3. A new window opens with `vibe.ts`
+3. A new window opens with `vibe.js`
 4. Write code, save (`Cmd+S`), see output
 5. That's it. Just vibe.
 
