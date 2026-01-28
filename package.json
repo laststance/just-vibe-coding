@@ -39,13 +39,33 @@
     "console"
   ],
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:just-vibe-coding.start",
+    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.js",
+    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.ts"
+  ],
   "contributes": {
     "commands": [
       {
         "command": "just-vibe-coding.start",
         "title": "Just Vibe Coding: Start"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Just Vibe Coding",
+      "properties": {
+        "just-vibe-coding.openReferencePane": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open reference documentation in right pane when starting a vibe session"
+        },
+        "just-vibe-coding.referenceUrl": {
+          "type": "string",
+          "default": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#standard_objects_by_category",
+          "description": "URL of reference documentation to open in Simple Browser"
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "node esbuild.js",
