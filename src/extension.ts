@@ -21,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   // Register the start command
   const startCommand = vscode.commands.registerCommand(
     'just-vibe-coding.start',
-    () => startSession(sessionManager)
+    () => startSession(sessionManager, context)
   );
   context.subscriptions.push(startCommand);
 
@@ -54,8 +54,8 @@ async function setupVibeSession(
     { dispose: () => statusBar?.dispose() }
   );
 
-  // Find vibe file (vibe.js or vibe.ts)
-  const vibeFile = await findVibeFile(workspacePath);
+  // Find vibe file: check pending file first, then search workspace
+  let vibeFile = await findVibeFile(context, workspacePath);
   if (!vibeFile) return;
 
   // Open vibe file in editor (in the first column)
@@ -68,10 +68,12 @@ async function setupVibeSession(
   // Show output panel
   outputManager.show();
 
-  // Register save watcher for auto-execution
+  // Register save watcher for auto-execution (any vibe.js/vibe.ts in session folders)
   const saveWatcher = vscode.workspace.onDidSaveTextDocument((savedDoc) => {
-    if (savedDoc.uri.fsPath === vibeFile) {
-      executor?.execute(vibeFile);
+    const savedPath = savedDoc.uri.fsPath;
+    if (isVibeFile(savedPath)) {
+      vibeFile = savedPath; // Update current vibe file
+      executor?.execute(savedPath);
     }
   });
   context.subscriptions.push(saveWatcher);
@@ -81,9 +83,41 @@ async function setupVibeSession(
 }
 
 /**
- * Finds the vibe file in the workspace (vibe.js or vibe.ts).
+ * Checks if a file path is a vibe file (vibe.js or vibe.ts in a session folder).
  */
-async function findVibeFile(workspacePath: string): Promise<string | undefined> {
+function isVibeFile(filePath: string): boolean {
+  const fileName = path.basename(filePath);
+  return (
+    (fileName === 'vibe.js' || fileName === 'vibe.ts') &&
+    filePath.includes('.just-vibe-coding') &&
+    filePath.includes('sessions')
+  );
+}
+
+/**
+ * Finds the vibe file to open.
+ * Priority:
+ * 1. Pending vibe file from globalState (newly created session)
+ * 2. Direct vibe.js/vibe.ts in workspace root (single session folder)
+ * 3. Latest session's vibe file (sessions parent folder)
+ */
+async function findVibeFile(
+  context: vscode.ExtensionContext,
+  workspacePath: string
+): Promise<string | undefined> {
+  // Check for pending vibe file from "Start" command
+  const pendingFile = context.globalState.get<string>('pendingVibeFile');
+  if (pendingFile) {
+    await context.globalState.update('pendingVibeFile', undefined); // Clear it
+    try {
+      await vscode.workspace.fs.stat(vscode.Uri.file(pendingFile));
+      return pendingFile;
+    } catch {
+      // File doesn't exist, continue to other methods
+    }
+  }
+
+  // Check for vibe file directly in workspace (single session folder)
   const jsFile = path.join(workspacePath, 'vibe.js');
   const tsFile = path.join(workspacePath, 'vibe.ts');
 
@@ -95,9 +129,55 @@ async function findVibeFile(workspacePath: string): Promise<string | undefined> 
       await vscode.workspace.fs.stat(vscode.Uri.file(tsFile));
       return tsFile;
     } catch {
-      return undefined;
+      // Not a single session folder, try finding latest session
     }
   }
+
+  // Find latest session in sessions folder
+  return findLatestSessionVibeFile(workspacePath);
+}
+
+/**
+ * Finds the vibe file from the most recent session folder.
+ * Session folders are named YYYY-MM-DD-HH-MM, so sorting alphabetically gives chronological order.
+ */
+async function findLatestSessionVibeFile(
+  sessionsPath: string
+): Promise<string | undefined> {
+  try {
+    const entries = await vscode.workspace.fs.readDirectory(
+      vscode.Uri.file(sessionsPath)
+    );
+
+    // Filter directories and sort descending (newest first)
+    const sessionDirs = entries
+      .filter(([, type]) => type === vscode.FileType.Directory)
+      .map(([name]) => name)
+      .sort()
+      .reverse();
+
+    // Find first session with a vibe file
+    for (const dir of sessionDirs) {
+      const jsFile = path.join(sessionsPath, dir, 'vibe.js');
+      const tsFile = path.join(sessionsPath, dir, 'vibe.ts');
+
+      try {
+        await vscode.workspace.fs.stat(vscode.Uri.file(jsFile));
+        return jsFile;
+      } catch {
+        try {
+          await vscode.workspace.fs.stat(vscode.Uri.file(tsFile));
+          return tsFile;
+        } catch {
+          continue;
+        }
+      }
+    }
+  } catch {
+    // Directory read failed
+  }
+
+  return undefined;
 }
 
 /**

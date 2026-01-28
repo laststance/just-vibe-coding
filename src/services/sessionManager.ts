@@ -14,10 +14,18 @@ export class SessionManager {
   }
 
   /**
-   * Creates a new vibe coding session.
-   * @returns Path to the created session directory
+   * Returns the base sessions directory path.
+   * @returns Path to ~/.just-vibe-coding/sessions/
    */
-  async createSession(): Promise<string> {
+  getSessionsBaseDir(): string {
+    return this.baseDir;
+  }
+
+  /**
+   * Creates a new vibe coding session.
+   * @returns Object containing baseDir and vibeFile paths
+   */
+  async createSession(): Promise<{ baseDir: string; vibeFile: string }> {
     const timestamp = this.getTimestamp();
     const sessionDir = path.join(this.baseDir, timestamp);
     const filePath = path.join(sessionDir, 'vibe.js');
@@ -31,14 +39,20 @@ export class SessionManager {
     const content = Buffer.from('console.log("vibe coding")\n', 'utf8');
     await vscode.workspace.fs.writeFile(fileUri, content);
 
-    return sessionDir;
+    return { baseDir: this.baseDir, vibeFile: filePath };
   }
 
   /**
-   * Checks if a workspace path is a vibe coding session.
+   * Checks if a workspace path is a vibe coding session or sessions folder.
+   * @param workspacePath - The workspace folder path
+   * @returns true if path is sessions folder or a session subfolder
    */
   isVibeSession(workspacePath: string): boolean {
-    return workspacePath.includes('.just-vibe-coding') && workspacePath.includes('sessions');
+    // Match both sessions/ folder and individual session folders
+    return (
+      workspacePath.includes('.just-vibe-coding') &&
+      workspacePath.includes('sessions')
+    );
   }
 
   /**
