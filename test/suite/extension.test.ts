@@ -27,6 +27,18 @@ describe('Just Vibe Coding Extension', () => {
     assert.ok(hasStartCommand, 'Start command should be registered');
   });
 
+  it('Run File command should be registered', async () => {
+    const commands = await vscode.commands.getCommands(true);
+    const hasRunCommand = commands.includes('just-vibe-coding.runFile');
+    assert.ok(hasRunCommand, 'Run File command should be registered');
+  });
+
+  it('Stop Execution command should be registered', async () => {
+    const commands = await vscode.commands.getCommands(true);
+    const hasStopCommand = commands.includes('just-vibe-coding.stopExecution');
+    assert.ok(hasStopCommand, 'Stop Execution command should be registered');
+  });
+
   it('SessionManager should create session directory', async () => {
     const extension = vscode.extensions.getExtension(extensionId);
     await extension?.activate();

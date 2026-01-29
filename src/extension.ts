@@ -18,12 +18,20 @@ let statusBar: StatusBar | undefined;
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const sessionManager = new SessionManager();
 
-  // Register the start command
+  // Register commands
   const startCommand = vscode.commands.registerCommand(
     'just-vibe-coding.start',
     () => startSession(sessionManager, context)
   );
-  context.subscriptions.push(startCommand);
+  const runCommand = vscode.commands.registerCommand(
+    'just-vibe-coding.runFile',
+    () => runCurrentFile()
+  );
+  const stopCommand = vscode.commands.registerCommand(
+    'just-vibe-coding.stopExecution',
+    () => stopExecution()
+  );
+  context.subscriptions.push(startCommand, runCommand, stopCommand);
 
   // Check if we're in a vibe session
   const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -33,7 +41,25 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   if (!sessionManager.isVibeSession(workspacePath)) return;
 
   // === VIBE SESSION SETUP ===
+  await vscode.commands.executeCommand('setContext', 'just-vibe-coding.inVibeSession', true);
   await setupVibeSession(context, workspacePath);
+}
+
+/**
+ * Runs the currently active vibe file.
+ */
+function runCurrentFile(): void {
+  const filePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+  if (filePath && isVibeFile(filePath)) {
+    executor?.execute(filePath);
+  }
+}
+
+/**
+ * Stops the currently running execution.
+ */
+function stopExecution(): void {
+  executor?.kill();
 }
 
 /**

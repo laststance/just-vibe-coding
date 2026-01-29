@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { spawn, ChildProcess } from 'child_process';
 import { dirname } from 'path';
 import { OutputManager } from './outputManager';
@@ -9,6 +10,14 @@ export class Executor {
   private currentProcess: ChildProcess | null = null;
 
   constructor(private outputManager: OutputManager) {}
+
+  /**
+   * Sets the running state context for UI updates.
+   * @param running - Whether a process is currently running
+   */
+  private setRunningState(running: boolean): void {
+    vscode.commands.executeCommand('setContext', 'just-vibe-coding.isRunning', running);
+  }
 
   /**
    * Executes a vibe file and streams output to the output channel.
@@ -31,6 +40,9 @@ export class Executor {
       shell: true,
     });
 
+    // Update running state
+    this.setRunningState(true);
+
     // Stream stdout
     this.currentProcess.stdout?.on('data', (data: Buffer) => {
       this.outputManager.append(data.toString());
@@ -44,12 +56,14 @@ export class Executor {
     // Handle process exit
     this.currentProcess.on('close', () => {
       this.currentProcess = null;
+      this.setRunningState(false);
     });
 
     // Handle spawn errors silently
     this.currentProcess.on('error', (error) => {
       this.outputManager.append(`[error] ${error.message}\n`);
       this.currentProcess = null;
+      this.setRunningState(false);
     });
   }
 
@@ -60,6 +74,7 @@ export class Executor {
     if (this.currentProcess) {
       this.currentProcess.kill();
       this.currentProcess = null;
+      this.setRunningState(false);
     }
   }
 }

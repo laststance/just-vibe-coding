@@ -50,8 +50,39 @@
       {
         "command": "just-vibe-coding.start",
         "title": "Just Vibe Coding: Start"
+      },
+      {
+        "command": "just-vibe-coding.runFile",
+        "title": "Run File",
+        "icon": "$(play)"
+      },
+      {
+        "command": "just-vibe-coding.stopExecution",
+        "title": "Stop Execution",
+        "icon": "$(debug-stop)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "just-vibe-coding.runFile",
+          "when": "resourceFilename =~ /^vibe\\.(js|py)$/ && just-vibe-coding.inVibeSession && !just-vibe-coding.isRunning",
+          "group": "navigation"
+        },
+        {
+          "command": "just-vibe-coding.stopExecution",
+          "when": "resourceFilename =~ /^vibe\\.(js|py)$/ && just-vibe-coding.inVibeSession && just-vibe-coding.isRunning",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "just-vibe-coding.runFile",
+          "when": "resourceFilename =~ /^vibe\\.(js|py)$/ && just-vibe-coding.inVibeSession",
+          "group": "1_vibe"
+        }
+      ]
+    }
   },
   "scripts": {
     "compile": "node esbuild.js",
