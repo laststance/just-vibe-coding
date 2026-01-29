@@ -118,14 +118,14 @@ vibe coding は以下を**提供しない**：
   ~/.vibe-coding/
     └─ sessions/
         └─ 2026-01-23-17-42/
-            └─ vibe.ts
+            └─ vibe.js
   ```
 
 - 現在開いているプロジェクトとは**物理的に分離**
 
 ### FR-3: 単一ファイルの提供
 
-- デフォルトファイル：`vibe.ts`（または `vibe.js`）
+- デフォルトファイル：`vibe.js`
 - 初期内容：
   ```ts
   console.log("vibe coding")

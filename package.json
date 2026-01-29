@@ -34,15 +34,14 @@
     "coding",
     "playground",
     "scratch",
-    "typescript",
+    "javascript",
     "node",
     "console"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
     "onCommand:just-vibe-coding.start",
-    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.js",
-    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.ts"
+    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.js"
   ],
   "contributes": {
     "commands": [
