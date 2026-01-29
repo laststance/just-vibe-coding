@@ -18,20 +18,24 @@
 - **One Command**: `Just Vibe Coding: Start` — that's all you need
 - **Isolated Environment**: Each session lives in `~/.just-vibe-coding/sessions/`
 - **Instant Execution**: Save to run, see output immediately
+- **Run/Stop Buttons**: ▶ and ◼ buttons in editor title bar for manual control
+- **Multi-Language**: JavaScript (`vibe.js`) and Python (`vibe.py`) support
 - **Zero Config**: No settings, no choices, no setup
 
 ## Requirements
 
 - VS Code 1.85.0+
-- Node.js 22+ (for native TypeScript execution)
+- Node.js (for JavaScript execution)
+- Python 3 (for Python execution, optional)
 
 ## Usage
 
 1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
 2. Type `Just Vibe Coding: Start`
-3. A new window opens with `vibe.js`
+3. A new window opens with `vibe.js` (or `vibe.py` for Python)
 4. Write code, save (`Cmd+S`), see output
-5. That's it. Just vibe.
+5. Use ▶ button to run manually, ◼ to stop
+6. That's it. Just vibe.
 
 ## What This Extension Does NOT Do
 
