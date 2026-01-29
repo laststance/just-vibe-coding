@@ -62,9 +62,6 @@ async function setupVibeSession(
   const doc = await vscode.workspace.openTextDocument(vibeFile);
   await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
 
-  // Open reference pane if enabled
-  await openReferencePane();
-
   // Show output panel
   outputManager.show();
 
@@ -178,29 +175,6 @@ async function findLatestSessionVibeFile(
   }
 
   return undefined;
-}
-
-/**
- * Opens reference documentation in external browser if enabled in settings.
- * @returns void
- */
-async function openReferencePane(): Promise<void> {
-  const config = vscode.workspace.getConfiguration('just-vibe-coding');
-  const openReference = config.get<boolean>('openReferencePane', true);
-  const referenceUrl = config.get<string>(
-    'referenceUrl',
-    'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#standard_objects_by_category'
-  );
-
-  if (!openReference) return;
-
-  try {
-    // Open in external browser (most reliable approach)
-    await vscode.env.openExternal(vscode.Uri.parse(referenceUrl));
-  } catch (error) {
-    // Fail silently per product philosophy
-    console.error('Failed to open reference:', error);
-  }
 }
 
 /**

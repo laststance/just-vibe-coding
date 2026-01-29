@@ -2,7 +2,7 @@
   "name": "just-vibe-coding",
   "displayName": "Just Vibe Coding",
   "description": "A place to write code without purpose. Just vibe and code.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "laststance",
   "author": {
     "name": "Laststance.io",
@@ -50,22 +50,7 @@
         "command": "just-vibe-coding.start",
         "title": "Just Vibe Coding: Start"
       }
-    ],
-    "configuration": {
-      "title": "Just Vibe Coding",
-      "properties": {
-        "just-vibe-coding.openReferencePane": {
-          "type": "boolean",
-          "default": true,
-          "description": "Open reference documentation in right pane when starting a vibe session"
-        },
-        "just-vibe-coding.referenceUrl": {
-          "type": "string",
-          "default": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#standard_objects_by_category",
-          "description": "URL of reference documentation to open in Simple Browser"
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "compile": "node esbuild.js",

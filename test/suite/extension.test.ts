@@ -90,4 +90,5 @@ describe('Just Vibe Coding Extension', () => {
       await vscode.workspace.fs.delete(dirUri, { recursive: true });
     }
   });
+
 });
