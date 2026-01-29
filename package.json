@@ -2,7 +2,7 @@
   "name": "just-vibe-coding",
   "displayName": "Just Vibe Coding",
   "description": "A place to write code without purpose. Just vibe and code.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "publisher": "laststance",
   "author": {
     "name": "Laststance.io",
@@ -35,13 +35,15 @@
     "playground",
     "scratch",
     "javascript",
+    "python",
     "node",
     "console"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
     "onCommand:just-vibe-coding.start",
-    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.js"
+    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.js",
+    "workspaceContains:**/.just-vibe-coding/sessions/**/vibe.py"
   ],
   "contributes": {
     "commands": [

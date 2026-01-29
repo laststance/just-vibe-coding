@@ -91,4 +91,38 @@ describe('Just Vibe Coding Extension', () => {
     }
   });
 
+  it('vibe.py file should be creatable in session', async () => {
+    const extension = vscode.extensions.getExtension(extensionId);
+    await extension?.activate();
+
+    // Create a test session
+    const timestamp = new Date()
+      .toISOString()
+      .slice(0, 16)
+      .replace('T', '-')
+      .replace(':', '-');
+    const testDir = path.join(testSessionsDir, `test-py-${timestamp}`);
+    const vibeFile = path.join(testDir, 'vibe.py');
+
+    const dirUri = vscode.Uri.file(testDir);
+    const fileUri = vscode.Uri.file(vibeFile);
+
+    try {
+      // Create directory and file
+      await vscode.workspace.fs.createDirectory(dirUri);
+      const content = Buffer.from('print("vibe coding")\n', 'utf8');
+      await vscode.workspace.fs.writeFile(fileUri, content);
+
+      // Verify file exists and has correct content
+      const readContent = await vscode.workspace.fs.readFile(fileUri);
+      assert.strictEqual(
+        readContent.toString(),
+        'print("vibe coding")\n',
+        'vibe.py should have correct content'
+      );
+    } finally {
+      // Cleanup
+      await vscode.workspace.fs.delete(dirUri, { recursive: true });
+    }
+  });
 });

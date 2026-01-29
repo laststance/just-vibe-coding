@@ -3,7 +3,7 @@ import { dirname } from 'path';
 import { OutputManager } from './outputManager';
 
 /**
- * Executes vibe.js files using Node.js.
+ * Executes vibe files (vibe.js or vibe.py) using the appropriate runtime.
  */
 export class Executor {
   private currentProcess: ChildProcess | null = null;
@@ -12,6 +12,7 @@ export class Executor {
 
   /**
    * Executes a vibe file and streams output to the output channel.
+   * @param filePath - Path to vibe.js or vibe.py
    */
   execute(filePath: string): void {
     // Kill previous process if running
@@ -20,8 +21,12 @@ export class Executor {
     // Clear output before new execution
     this.outputManager.clear();
 
-    // Spawn Node.js process
-    this.currentProcess = spawn('node', [filePath], {
+    // Select runtime based on file extension
+    const isPython = filePath.endsWith('.py');
+    const command = isPython ? 'python3' : 'node';
+
+    // Spawn process
+    this.currentProcess = spawn(command, [filePath], {
       cwd: dirname(filePath),
       shell: true,
     });

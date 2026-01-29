@@ -65,7 +65,7 @@ async function setupVibeSession(
   // Show output panel
   outputManager.show();
 
-  // Register save watcher for auto-execution (vibe.js in session folders)
+  // Register save watcher for auto-execution (vibe.js or vibe.py in session folders)
   const saveWatcher = vscode.workspace.onDidSaveTextDocument((savedDoc) => {
     const savedPath = savedDoc.uri.fsPath;
     if (isVibeFile(savedPath)) {
@@ -80,12 +80,12 @@ async function setupVibeSession(
 }
 
 /**
- * Checks if a file path is a vibe file (vibe.js in a session folder).
+ * Checks if a file path is a vibe file (vibe.js or vibe.py in a session folder).
  */
 function isVibeFile(filePath: string): boolean {
   const fileName = path.basename(filePath);
   return (
-    fileName === 'vibe.js' &&
+    (fileName === 'vibe.js' || fileName === 'vibe.py') &&
     filePath.includes('.just-vibe-coding') &&
     filePath.includes('sessions')
   );
@@ -95,7 +95,7 @@ function isVibeFile(filePath: string): boolean {
  * Finds the vibe file to open.
  * Priority:
  * 1. Pending vibe file from globalState (newly created session)
- * 2. Direct vibe.js in workspace root (single session folder)
+ * 2. Direct vibe.js or vibe.py in workspace root (single session folder)
  * 3. Latest session's vibe file (sessions parent folder)
  */
 async function findVibeFile(
@@ -114,14 +114,20 @@ async function findVibeFile(
     }
   }
 
-  // Check for vibe.js directly in workspace (single session folder)
-  const vibeFile = path.join(workspacePath, 'vibe.js');
+  // Check for vibe.js or vibe.py directly in workspace (single session folder)
+  const jsFile = path.join(workspacePath, 'vibe.js');
+  const pyFile = path.join(workspacePath, 'vibe.py');
 
   try {
-    await vscode.workspace.fs.stat(vscode.Uri.file(vibeFile));
-    return vibeFile;
+    await vscode.workspace.fs.stat(vscode.Uri.file(jsFile));
+    return jsFile;
   } catch {
-    // Not a single session folder, try finding latest session
+    try {
+      await vscode.workspace.fs.stat(vscode.Uri.file(pyFile));
+      return pyFile;
+    } catch {
+      // Not a single session folder, try finding latest session
+    }
   }
 
   // Find latest session in sessions folder
@@ -147,15 +153,21 @@ async function findLatestSessionVibeFile(
       .sort()
       .reverse();
 
-    // Find first session with a vibe.js file
+    // Find first session with a vibe.js or vibe.py file
     for (const dir of sessionDirs) {
-      const vibeFile = path.join(sessionsPath, dir, 'vibe.js');
+      const jsFile = path.join(sessionsPath, dir, 'vibe.js');
+      const pyFile = path.join(sessionsPath, dir, 'vibe.py');
 
       try {
-        await vscode.workspace.fs.stat(vscode.Uri.file(vibeFile));
-        return vibeFile;
+        await vscode.workspace.fs.stat(vscode.Uri.file(jsFile));
+        return jsFile;
       } catch {
-        continue;
+        try {
+          await vscode.workspace.fs.stat(vscode.Uri.file(pyFile));
+          return pyFile;
+        } catch {
+          continue;
+        }
       }
     }
   } catch {
